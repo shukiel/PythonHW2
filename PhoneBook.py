@@ -4,6 +4,7 @@ import Contact
 
 class PhoneBook:
     select = 0
+    contacts = []
 
     chooseContactType = 'Should this contact be Simple (S), Friend (F), Professional (P) or Both (B)?'
     def add_contact(self):
@@ -14,6 +15,7 @@ class PhoneBook:
             if choose in {'S', 's', 'F', 'f', 'P', 'p', 'B', 'b'} :
                 break
             print('Wrong Selection Choose Again!')
+
         if choose in {'S','s'}:
             c = Contact.Contact()
         elif choose in {'f','F'}:
@@ -23,11 +25,17 @@ class PhoneBook:
         elif choose in {'b','B'}:
            c = Contact.ProfessionalFriendContact()
         c.readValues()
+        self.contacts.append(c)
+        self.contacts.sort()
+
     def show_contacts(self):
         print('Show all')
+        for c in self.contacts:
+            print('Contact #',self.contacts.index(c) + 1, ":\n ", c, '\n', sep='')
 
     def edit_contact(self):
         print('Edit:')
+        contactToEdit = input("")
         print('Enter a valid number of the contact you wish to edit:')
         choose = input (self.chooseContactType)
         print('For the following fields click enter if there\'s no change, '
@@ -62,13 +70,13 @@ class PhoneBook:
             if (select == 1):
                 self.add_contact(self)
             elif (select == 2):
-                self.show_contacts()
+                self.show_contacts(self)
             elif (select == 3):
-                self.edit_contact()
+                self.edit_contact(self)
             elif (select == 4):
-                self.find_contact()
+                self.find_contact(self)
             elif (select == 5):
-                self.delete_contact()
+                self.delete_contact(self)
             elif (select == 6):
                 print ('Thank you, Come again !')
                 break

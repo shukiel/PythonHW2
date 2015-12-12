@@ -22,7 +22,11 @@ class Contact:
         return (self.name < other.name)
 
     def __str__(self):
-        return "Name: " + self.name + "/tPhone# :" + self.phone
+        string = "Name: " + self.name
+
+        if (self.phone):
+           string = string + "\n Phone Number: " + self.phone
+        return string
 
     def readValues(self):
         while(True):
@@ -46,16 +50,13 @@ class FriendContact(Contact):
     def __init__(self, olderContact = None):
         pass
 
-    '''
-    def __lt__(self, other):
-        return super().__lt__(self, other)
-    '''
-
     def __str__(self):
-        return super().__str__() + "\tHome Phone#:" + self.homePhone + "\tPersonal E-Mail: " + self.personalEmail
-
-    def strWithoutName(self):
-        return "\tHome Phone#:" + self.homePhone + "\tE-Mail: " + self.personalEmail
+        string = Contact.__str__(self)
+        if (self.homePhone):
+           string = string + "\n Home Phone Number: " + self.homePhone
+        if (self.email):
+           string = string + "\n Personal E-Mail: " + self.email
+        return string
 
     def readValues(self):
         super().readValues()
@@ -76,8 +77,16 @@ class ProfessionalContact(Contact):
     def __init__(self, olderContact = None):
         pass
 
-    def __str__(self):
-        return super().__str__() + "\tWork Phone#:" + self.workPhone + "\tWork E-Mail: " + self.workEmail
+    def __str__(self, withSuper = True):
+        if (withSuper):
+            string = Contact.__str__(self)
+        else:
+            string = ''
+        if (self.workPhone):
+           string = string + "\n Work Phone Number: " + self.workPhone
+        if (self.workEmail):
+           string = string + "\n Work E-Mail: " + self.workEmail
+        return string
 
     def readValues(self):
         super().readValues()
@@ -101,4 +110,5 @@ class ProfessionalFriendContact(ProfessionalContact,FriendContact):
     def readValues(self):
         super().readValues()
 
-
+    def __str__(self):
+            return FriendContact.__str__(self) + ProfessionalContact.__str__(self,False)
