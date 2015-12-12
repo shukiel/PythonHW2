@@ -35,12 +35,30 @@ class PhoneBook:
 
     def edit_contact(self):
         print('Edit:')
-        contactToEdit = input("")
-        print('Enter a valid number of the contact you wish to edit:')
+        while(True):
+            indexToEdit = input('Enter a valid number of the contact you wish to edit:')
+            if str.isdigit(indexToEdit):
+                indexToEdit = int(indexToEdit)
+                if indexToEdit > 0:
+                    indexToEdit= indexToEdit -1
+                    if len(self.contacts) > indexToEdit:
+                        break
+
+            print("Error. Please ",end= '')
+        c = self.contacts[indexToEdit]
         choose = input (self.chooseContactType)
+        if choose in {'S','s'}:
+            c = Contact.Contact(c)
+        elif choose in {'f','F'}:
+            c = Contact.FriendContact(c)
+        elif choose in {'p','P'}:
+            c = Contact.ProfessionalContact(c)
+        elif choose in {'b','B'}:
+           c = Contact.ProfessionalFriendContact(c)
         print('For the following fields click enter if there\'s no change, '
               'a new value if you want to replace the field,'
               ' or x if you want to delete the field (the name field cannot be deleted).')
+        c.readValues()
 
     def find_contact(self):
         print ('Find')

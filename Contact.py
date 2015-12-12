@@ -10,13 +10,21 @@ def confirmEmail(email):
     if email == '' or re.fullmatch(r"\w+@\w+\.\w+",email):
         return True
     return False
+def updateField(oldField,newField):
+    if newField == '':
+        return oldField
+    elif newField == 'x':
+        return ''
+    else:
+        return newField
 
 class Contact:
     def __init__(self, olderContact=None):
         if olderContact != None:
-            self = olderContact
+            self.name = olderContact.name
+            self.cellPhone = olderContact.cellPhone
         else:
-            name = ''
+            self.name = ''
 
     def __lt__(self, other):
         return (self.name < other.name)
@@ -24,24 +32,31 @@ class Contact:
     def __str__(self):
         string = "Name: " + self.name
 
-        if (self.phone):
-           string = string + "\n Phone Number: " + self.phone
+        if self.cellPhone:
+           string = string + "\n Phone Number: " + self.cellPhone
         return string
 
     def readValues(self):
         while(True):
-            self.name = input('Please Enter Contact Name:')
-            if self.name not in {'', None}:
-                break
+            if self.name == '':
+                self.name = input('Name:')
+            else:
+                nameStr = 'Name(' + self.name + '):'
+                self.name = updateField(self.name,input(nameStr))
+            if self.name not in {''}:
+                    break
             print('Name field can not be empty')
-        print(self.name)
 
         while(True):
-            self.phone = input('Please Enter Phone Number:')
-            if confirmPhone(self.phone):
+            if hasattr(self,'cellPhone'):
+                cellStr = 'Cell Phone Number(' + self.cellPhone + '):'
+                self.cellPhone = updateField(self.cellPhone,input(cellStr))
+            else :
+                self.cellPhone = input('Cell Phone Number:')
+            if confirmPhone(self.cellPhone):
                 break
             print('phone number may contain only digits')
-        print(self.phone)
+        print(self.cellPhone)
 
     def match(self, strToMatch):
         pass #TODO
@@ -61,13 +76,19 @@ class FriendContact(Contact):
     def readValues(self):
         super().readValues()
         while (True):
-            self.homePhone = input ('Please Enter Home Phone Number:')
+            if hasattr(self,'homePhone'):
+                self.homePhone = updateField(self.homePhone, input('Home Phone Number:(',self.homePhone,'):'))
+            else:
+                self.homePhone = input ('Home Phone Number:')
             if confirmPhone(self.homePhone):
                 break
             print('Home phone number may contain only digits')
-        print(self.homePhone)
+
         while (True):
-            self.email = input ('Please Enter Email:')
+            if hasattr(self,'email'):
+                self.email = updateField(self.email, input ('Please Enter Email(',self.email,'):') )
+            else:
+                self.email = input ('Please Enter Email:')
             if confirmEmail(self.email):
                 break
             print('ileagal eMail. please try again')
@@ -91,14 +112,20 @@ class ProfessionalContact(Contact):
     def readValues(self):
         super().readValues()
         while (True):
-            self.workPhone = input ('Please Enter Work Phone Number:')
+            if hasattr(self,'workPhone'):
+                self.workPhone = updateField(self.workPhone, input ('Work Phone Number(',self.workPhone,'):'))
+            else:
+                self.workPhone = input ('Work Phone Number:')
             if confirmPhone(self.workPhone):
                 break
             print('Work phone number may contain only digits')
         print(self.workPhone)
 
         while (True):
-            self.workEmail = input ('Please Enter Work Email:')
+            if hasattr(self,'workEmail'):
+                self.workEmail = updateField(self.workEmail, input ('Work Email(',self.workEmail,'):'))
+            else:
+                self.workEmail = input ('Work Email:')
             if confirmEmail(self.workEmail):
                 break
             print('ileagal eMail. please try again')
