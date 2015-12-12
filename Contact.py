@@ -1,4 +1,4 @@
-# Author: Enosh Cohen
+# Author: Enosh Cohen & Zuriel Sarusi
 #
 import re
 def confirmPhone(phone):

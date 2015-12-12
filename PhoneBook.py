@@ -1,7 +1,6 @@
 #By Enosh Cohen & Zuriel Sarusi
 #    301752754     301272498
 
-import re
 import Contact
 
 class PhoneBook:
