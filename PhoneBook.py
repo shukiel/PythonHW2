@@ -1,14 +1,10 @@
 __author__ = 'Zukis87'
 import re
 import Contact
+
 class PhoneBook:
-    contacts =list(Contact)
-    c = Contact()
-    contacts.__add__(c)
-    print (c.number)
-
-
     select = 0
+
     chooseContactType = 'Should this contact be Simple (S), Friend (F), Professional (P) or Both (B)?'
     def add_contact(self):
         print("Add New Contact")
@@ -17,61 +13,16 @@ class PhoneBook:
             choose = input (self.chooseContactType)
             if choose in {'S', 's', 'F', 'f', 'P', 'p', 'B', 'b'} :
                 break
-            print ('Wrong Selection Choose Again!')
-
-        while(True):
-            name = input('Please Enter Contact Name:')
-            if name not in {'', None}:
-                break
-            print('Name field can not be empty')
-        print(name)
-        while(True):
-            phone = input('Please Enter Phone Number:')
-            if self.confirmPhone(self,phone):
-                break
-            print('phone number may contain only digits')
-        print(phone)
-
-        if choose in {'f','F'}:
-            while (True):
-                homePhone = input ('Please Enter Home Phone Number:')
-                if self.confirmPhone(self,homePhone):
-                    break
-                print('Home phone number may contain only digits')
-            print(homePhone)
-            while (True):
-                email = input ('Please Enter Email:')
-                if self.confirmEmail(self,email):
-                    break
-                print('ileagal eMail. please try again')
-            print(email)
-
+            print('Wrong Selection Choose Again!')
+        if choose in {'S','s'}:
+            c = Contact.Contact()
+        elif choose in {'f','F'}:
+            c = Contact.FriendContact()
         elif choose in {'p','P'}:
-            while (True):
-                workPhone = input ('Please Enter Work Phone Number:')
-                if self.confirmPhone(self,workPhone):
-                    break
-                print('Work phone number may contain only digits')
-            print(workPhone)
-
-            while (True):
-                workEmail = input ('Please Enter eMail:')
-                if self.confirmEmail(self,workEmail):
-                    break
-                print('ileagal eMail. please try again')
-            print(workEmail)
+            c = Contact.ProfessionalContact()
         elif choose in {'b','B'}:
-            print('')
-
-    def confirmPhone(self,phone):
-        if str.isdigit(phone):
-            return True
-        return False
-    def confirmEmail(self,email):
-        if re.fullmatch(r"\w+@\w+\.\w+",email):
-            return True
-        return False
-
+           c = Contact.ProfessionalFriendContact()
+        c.readValues()
     def show_contacts(self):
         print('Show all')
 
