@@ -7,6 +7,7 @@ class PhoneBook:
     contacts = []
 
     chooseContactType = 'Should this contact be Simple (S), Friend (F), Professional (P) or Both (B)?'
+
     def add_contact(self):
         print("Add New Contact")
 
@@ -69,15 +70,17 @@ class PhoneBook:
             if (c.match(strToMatch)):
                 print('Contact #',self.contacts.index(c) + 1, ":\n ", c, '\n', sep='')
 
-
     def delete_contact(self):
         while(True):
-            deleteSelectioin = input ("Enter a valid number of the contact you wish to delete or -1 to abort: ")
-            if (deleteSelectioin == -1):
+            deleteSelection =int(input ("Enter a valid number of the contact you wish to delete or -1 to abort: "))
+
+            if (deleteSelection == -1):
                 return
-            if (deleteSelectioin in range(1, self.contacts.count()+1)):
+            if (deleteSelection in range(1, self.contacts.__len__() + 1)):
                 break
-        self.contacts.remove(deleteSelectioin-1)
+        delName = self.contacts[deleteSelection-1].name
+        self.contacts.remove(self.contacts[deleteSelection-1])
+        print ('\n\n\n', delName, ' Deleted! \n\n\n')
 
 
     def start(self):
