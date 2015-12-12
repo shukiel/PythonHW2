@@ -13,7 +13,7 @@ def confirmEmail(email):
 def updateField(oldField,newField):
     if newField == '':
         return oldField
-    elif newField == 'x':
+    elif newField in {'x','X'}:
         return ''
     else:
         return newField
@@ -42,7 +42,9 @@ class Contact:
                 self.name = input('Name:')
             else:
                 nameStr = 'Name(' + self.name + '):'
-                self.name = updateField(self.name,input(nameStr))
+                tempName = updateField(self.name,input(nameStr))
+                if tempName not in  {''}:
+                    self.name = tempName
             if self.name not in {''}:
                     break
             print('Name field can not be empty')
@@ -62,9 +64,6 @@ class Contact:
         return self.name.__contains__(strToMatch) or self.phone.__contains__(strToMatch)
 
 class FriendContact(Contact):
-    def __init__(self, olderContact = None):
-        if olderContact != None:
-            self = olderContact
 
     def __str__(self):
         string = Contact.__str__(self)
@@ -99,9 +98,6 @@ class FriendContact(Contact):
         return super().match(strToMatch) or self.email.__contains__(strToMatch) or self.homePhone.__contains__(strToMatch)
     
 class ProfessionalContact(Contact):
-    def __init__(self, olderContact = None):
-        if olderContact != None:
-            self = olderContact
 
     def __str__(self, withSuper = True):
         if (withSuper):
@@ -140,8 +136,7 @@ class ProfessionalContact(Contact):
         return super().match(strToMatch) or self.workEmail.__contains__(strToMatch) or self.workPhone.__contains__(strToMatch)
 
 class ProfessionalFriendContact(ProfessionalContact,FriendContact):
-    def __init__(self, olderContact = None):
-        pass
+
     def readValues(self):
         super().readValues()
     def match(self, strToMatch):

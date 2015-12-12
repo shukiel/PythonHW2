@@ -48,17 +48,20 @@ class PhoneBook:
         c = self.contacts[indexToEdit]
         choose = input (self.chooseContactType)
         if choose in {'S','s'}:
-            c = Contact.Contact(c)
+            d = Contact.Contact(c)
         elif choose in {'f','F'}:
-            c = Contact.FriendContact(c)
+            d = Contact.FriendContact(c)
         elif choose in {'p','P'}:
-            c = Contact.ProfessionalContact(c)
+            d = Contact.ProfessionalContact(c)
         elif choose in {'b','B'}:
-           c = Contact.ProfessionalFriendContact(c)
+           d = Contact.ProfessionalFriendContact(c)
         print('For the following fields click enter if there\'s no change, '
               'a new value if you want to replace the field,'
               ' or x if you want to delete the field (the name field cannot be deleted).')
-        c.readValues()
+        d.readValues()
+        self.contacts.append(d)
+        self.contacts.remove(c)
+        self.contacts.sort()
 
     def find_contact(self):
         strToMatch = input('Type contact details (name, phone, email):')
@@ -95,7 +98,6 @@ class PhoneBook:
             except ValueError:
                 print (wrongInput)
                 continue
-
             if (select == 1):
                 self.add_contact(self)
             elif (select == 2):
