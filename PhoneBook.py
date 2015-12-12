@@ -37,15 +37,16 @@ class PhoneBook:
 
     def edit_contact(self):
         print('Edit:')
+        if self.contacts.__len__() == 0:
+            print("Contact list is empty")
+            return
         while(True):
             indexToEdit = input('Enter a valid number of the contact you wish to edit:')
             if str.isdigit(indexToEdit):
                 indexToEdit = int(indexToEdit)
-                if indexToEdit > 0:
+                if indexToEdit in range(1, len(self.contacts)+1):
                     indexToEdit= indexToEdit -1
-                    if len(self.contacts) > indexToEdit:
-                        break
-
+                    break
             print("Error. Please ",end= '')
         c = self.contacts[indexToEdit]
         choose = input (self.chooseContactType)
@@ -72,13 +73,18 @@ class PhoneBook:
                 print('Contact #',self.contacts.index(c) + 1, ":\n ", c, '\n', sep='')
 
     def delete_contact(self):
-        while(True):
-            deleteSelection =int(input ("Enter a valid number of the contact you wish to delete or -1 to abort: "))
+        if self.contacts.__len__() == 0:
+            print("Contact list is empty")
+            return
 
-            if (deleteSelection == -1):
-                return
-            if (deleteSelection in range(1, self.contacts.__len__() + 1)):
-                break
+        while(True):
+            deleteSelection =input ("Enter a valid number of the contact you wish to delete or 0 to abort: ")
+            if str.isdigit(deleteSelection):
+                deleteSelection = int(deleteSelection)
+                if deleteSelection == 0:
+                    return
+                if deleteSelection in range(1, len(self.contacts)+1):
+                    break
         delName = self.contacts[deleteSelection-1].name
         self.contacts.remove(self.contacts[deleteSelection-1])
         print ('\n\n\n', delName, ' Deleted! \n\n\n')
