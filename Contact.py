@@ -2,12 +2,12 @@
 #
 import re
 def confirmPhone(phone):
-    if phone == '' or str.isdigit(phone):
+    if str.isdigit(phone):
         return True
     return False
 
 def confirmEmail(email):
-    if email == '' or re.fullmatch(r"\w+@\w+\.\w+",email):
+    if re.fullmatch(r"\w+@(\w+\.\w+)+",email):
         return True
     return False
 def updateField(oldField,newField):
@@ -22,91 +22,122 @@ class Contact:
     def __init__(self, olderContact=None):
         if olderContact != None:
             self.name = olderContact.name
-            self.cellPhone = olderContact.cellPhone
+            if hasattr(olderContact,'cellPhone'):
+                self.cellPhone = olderContact.cellPhone
         else:
-            self.name = ''
+            self.name = None
 
     def __lt__(self, other):
-        return (self.name < other.name)
+        return (str.lower(self.name) < str.lower(other.name))
 
     def __str__(self):
         string = "Name: " + self.name
 
-        if self.cellPhone:
-           string = string + "\n Phone Number: " + self.cellPhone
+        if hasattr(self,'cellPhone'):
+           string = string + "\n Cell Phone Number: " + self.cellPhone
         return string
 
     def readValues(self):
         while(True):
-            if self.name == '':
+            if self.name == None:
                 self.name = input('Name:')
             else:
-                nameStr = 'Name(' + self.name + '):'
-                tempName = updateField(self.name,input(nameStr))
-                if tempName not in  {''}:
-                    self.name = tempName
-            if self.name not in {''}:
-                    break
+                tempName = updateField(self.name,input('Name(' + self.name + '):'))
+                if tempName == '':
+                    print("Name Value Cannot be erased")
+                    continue
+                self.name = tempName
+                break
+            if self.name != '':
+                break
+            self.name = None
             print('Name field can not be empty')
 
         while(True):
             if hasattr(self,'cellPhone'):
-                cellStr = 'Cell Phone Number(' + self.cellPhone + '):'
-                self.cellPhone = updateField(self.cellPhone,input(cellStr))
+                tempCellPhone = updateField(self.cellPhone,input('Cell Phone Number(' + self.cellPhone + '):'))
+                if tempCellPhone == '':
+                    del(self.cellPhone)
+                    break
             else :
-                self.cellPhone = input('Cell Phone Number:')
-            if confirmPhone(self.cellPhone):
+                tempCellPhone = input('Cell Phone Number:')
+                if tempCellPhone == '':
+                    break
+            if confirmPhone(tempCellPhone):
+                self.cellPhone = tempCellPhone
                 break
-            print('phone number may contain only digits')
-        print(self.cellPhone)
+            print('Cell phone number may contain only digits')
 
     def match(self, strToMatch):
-        return self.name.__contains__(strToMatch) or self.phone.__contains__(strToMatch)
+        return self.name.__contains__(strToMatch) or self.cellPhone.__contains__(strToMatch)
 
 class FriendContact(Contact):
+    def __init__(self, olderContact=None):
+        super().__init__(olderContact)
+        if hasattr(olderContact,'homePhone'):
+            self.homePhone = olderContact.homePhone
+        if hasattr(olderContact,'email'):
+            self.email = olderContact.email
 
     def __str__(self):
         string = Contact.__str__(self)
-        if (self.homePhone):
+        if hasattr(self,'homePhone'):
            string = string + "\n Home Phone Number: " + self.homePhone
-        if (self.email):
+        if hasattr(self,'email'):
            string = string + "\n Personal E-Mail: " + self.email
         return string
 
     def readValues(self):
         super().readValues()
-        while (True):
+        while(True):
             if hasattr(self,'homePhone'):
-                self.homePhone = updateField(self.homePhone, input('Home Phone Number:(',self.homePhone,'):'))
+                tempHomePhone = updateField(self.homePhone, input('Home Phone Number:(' +self.homePhone+'):'))
+                if tempHomePhone == '':
+                    del(self.homePhone)
+                    break
             else:
-                self.homePhone = input ('Home Phone Number:')
-            if confirmPhone(self.homePhone):
+                tempHomePhone = input('Home Phone Number:')
+                if tempHomePhone == '':
+                    break
+            if confirmPhone(tempHomePhone):
+                self.homePhone =tempHomePhone
                 break
             print('Home phone number may contain only digits')
 
         while (True):
             if hasattr(self,'email'):
-                self.email = updateField(self.email, input ('Please Enter Email(',self.email,'):') )
+                tempEmail = updateField(self.email, input ('Email(' + self.email + '):') )
+                if tempEmail == '':
+                    del(self.email)
+                    break
             else:
-                self.email = input ('Please Enter Email:')
-            if confirmEmail(self.email):
+                tempEmail = input('Email:')
+                if tempEmail == '':
+                    break
+            if confirmEmail(tempEmail):
+                self.email = tempEmail
                 break
             print('ileagal eMail. please try again')
-        print(self.email)
 
     def match(self, strToMatch):
         return super().match(strToMatch) or self.email.__contains__(strToMatch) or self.homePhone.__contains__(strToMatch)
     
 class ProfessionalContact(Contact):
+    def __init__(self, olderContact=None):
+        super().__init__(olderContact)
+        if hasattr(olderContact,'workPhone'):
+            self.workPhone = olderContact.workPhone
+        if hasattr(olderContact,'workEmail'):
+            self.workEmail = olderContact.workEmail
 
     def __str__(self, withSuper = True):
         if (withSuper):
             string = Contact.__str__(self)
         else:
             string = ''
-        if (self.workPhone):
+        if hasattr(self,'workPhone'):
            string = string + "\n Work Phone Number: " + self.workPhone
-        if (self.workEmail):
+        if hasattr(self,'workEmail'):
            string = string + "\n Work E-Mail: " + self.workEmail
         return string
 
@@ -114,31 +145,44 @@ class ProfessionalContact(Contact):
         super().readValues()
         while (True):
             if hasattr(self,'workPhone'):
-                self.workPhone = updateField(self.workPhone, input ('Work Phone Number(',self.workPhone,'):'))
+                tempWorkPhone = updateField(self.workPhone, input ('Work Phone Number(' + self.workPhone + '):'))
+                if tempWorkPhone == '':
+                    del(self.workPhone)
+                    break
             else:
-                self.workPhone = input ('Work Phone Number:')
-            if confirmPhone(self.workPhone):
+                tempWorkPhone = input('Work Phone Number:')
+                if tempWorkPhone == '':
+                    break
+            if confirmPhone(tempWorkPhone):
+                self.workPhone = tempWorkPhone
                 break
             print('Work phone number may contain only digits')
-        print(self.workPhone)
 
         while (True):
             if hasattr(self,'workEmail'):
-                self.workEmail = updateField(self.workEmail, input ('Work Email(',self.workEmail,'):'))
+                tempEmail = updateField(self.workEmail, input ('Work Email(' + self.workEmail + '):') )
+                if tempEmail == '':
+                    del(self.workEmail)
+                    break
             else:
-                self.workEmail = input ('Work Email:')
-            if confirmEmail(self.workEmail):
+                tempEmail = input('Work Email:')
+                if tempEmail == '':
+                    break
+            if confirmEmail(tempEmail):
+                self.workEmail = tempEmail
                 break
-            print('ileagal eMail. please try again')
-        print(self.workEmail)
+            print('ileagal Email. please try again')
         
     def match(self, strToMatch):
         return super().match(strToMatch) or self.workEmail.__contains__(strToMatch) or self.workPhone.__contains__(strToMatch)
 
 class ProfessionalFriendContact(ProfessionalContact,FriendContact):
+    def __init__(self, olderContact=None):
+        super().__init__(olderContact)
 
     def readValues(self):
         super().readValues()
+
     def match(self, strToMatch):
         return super(ProfessionalFriendContact, self).match(strToMatch)
 
