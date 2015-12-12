@@ -4,12 +4,12 @@ import re
 class PhoneBook:
 
     select = 0
-
+    chooseContactType = 'Should this contact be Simple (S), Friend (F), Professional (P) or Both (B)?'
     def add_contact(self):
         print("Add New Contact")
 
         while(True):
-            choose = input ('Should this contact be Simple (S), Friend (F), Professional (P) or Both (B)?')
+            choose = input (self.chooseContactType)
             if choose in {'S', 's', 'F', 'f', 'P', 'p', 'B', 'b'} :
                 break
             print ('Wrong Selection Choose Again!')
@@ -58,8 +58,6 @@ class PhoneBook:
         elif choose in {'b','B'}:
             print('')
 
-
-
     def confirmPhone(self,phone):
         if str.isdigit(phone):
             return True
@@ -70,10 +68,15 @@ class PhoneBook:
         return False
 
     def show_contacts(self):
-        print ('Show all')
+        print('Show all')
 
     def edit_contact(self):
-        print ('Edit')
+        print('Edit:')
+        print('Enter a valid number of the contact you wish to edit:')
+        choose = input (self.chooseContactType)
+        print('For the following fields click enter if there\'s no change, '
+              'a new value if you want to replace the field,'
+              ' or x if you want to delete the field (the name field cannot be deleted).')
 
     def find_contact(self):
         print ('Find')
@@ -92,11 +95,12 @@ class PhoneBook:
             print ('6 - Exit')
             print ('-->')
 
+            wrongInput = 'Wrong Selection Input DUDE!!!'
             select = input ()
             try:
                 select = int(select)
             except ValueError:
-                print ('Wrong Selection Input DUDE!!!')
+                print (wrongInput)
                 continue
 
             if (select == 1):
@@ -113,7 +117,7 @@ class PhoneBook:
                 print ('Thank you, Come again !')
                 break
             else:
-                print ('Wrong Selection Input DUDE!!!')
+                print (wrongInput)
 
 pb = (PhoneBook)
 pb.start(pb)
