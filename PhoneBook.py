@@ -24,10 +24,6 @@ class PhoneBook:
                 if (re.match (r"/w+@/w/+./w+")!=None):
                     break
 
-<<<<<<< HEAD
-=======
-
->>>>>>> zuki
     def start(self):
         while (True):
             print ('What would you like to do?')
@@ -45,10 +41,7 @@ class PhoneBook:
             except ValueError:
                 print ('Wrong Selection Input DUDE!!!')
                 continue
-<<<<<<< HEAD
-=======
-
->>>>>>> zuki
+                
             if (select == 1):
                 self.add_contact()
             elif (select == 2):
