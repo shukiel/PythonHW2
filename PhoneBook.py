@@ -61,10 +61,21 @@ class PhoneBook:
         c.readValues()
 
     def find_contact(self):
-        print ('Find')
+        strToMatch = input('Type contact details (name, phone, email):')
+        for c in self.contacts:
+            if (c.match(strToMatch)):
+                print('Contact #',self.contacts.index(c) + 1, ":\n ", c, '\n', sep='')
+
 
     def delete_contact(self):
-        print ('Delete')
+        while(True):
+            deleteSelectioin = input ("Enter a valid number of the contact you wish to delete or -1 to abort: ")
+            if (deleteSelectioin == -1):
+                return
+            if (deleteSelectioin in range(1, self.contacts.count()+1)):
+                break
+        self.contacts.remove(deleteSelectioin-1)
+
 
     def start(self):
         while (True):
