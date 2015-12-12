@@ -44,11 +44,12 @@ class Contact:
         print(self.phone)
 
     def match(self, strToMatch):
-        pass #TODO
+        return self.name.__contains__(strToMatch) or self.phone.__contains__(strToMatch)
 
 class FriendContact(Contact):
     def __init__(self, olderContact = None):
-        pass
+        if olderContact != None:
+            self = olderContact
 
     def __str__(self):
         string = Contact.__str__(self)
@@ -73,9 +74,13 @@ class FriendContact(Contact):
             print('ileagal eMail. please try again')
         print(self.email)
 
+    def match(self, strToMatch):
+        return super().match(strToMatch) or self.email.__contains__(strToMatch) or self.homePhone.__contains__(strToMatch)
+    
 class ProfessionalContact(Contact):
     def __init__(self, olderContact = None):
-        pass
+        if olderContact != None:
+            self = olderContact
 
     def __str__(self, withSuper = True):
         if (withSuper):
@@ -103,12 +108,17 @@ class ProfessionalContact(Contact):
                 break
             print('ileagal eMail. please try again')
         print(self.workEmail)
+        
+    def match(self, strToMatch):
+        return super().match(strToMatch) or self.workEmail.__contains__(strToMatch) or self.workPhone.__contains__(strToMatch)
 
 class ProfessionalFriendContact(ProfessionalContact,FriendContact):
     def __init__(self, olderContact = None):
         pass
     def readValues(self):
         super().readValues()
+    def match(self, strToMatch):
+        return super(ProfessionalFriendContact, self).match(strToMatch)
 
     def __str__(self):
             return FriendContact.__str__(self) + ProfessionalContact.__str__(self,False)
