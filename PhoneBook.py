@@ -1,7 +1,12 @@
 __author__ = 'Zukis87'
 import re
-
+import Contact
 class PhoneBook:
+    contacts =list(Contact)
+    c = Contact()
+    contacts.__add__(c)
+    print (c.number)
+
 
     select = 0
     chooseContactType = 'Should this contact be Simple (S), Friend (F), Professional (P) or Both (B)?'
