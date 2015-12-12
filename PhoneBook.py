@@ -1,28 +1,85 @@
 __author__ = 'Zukis87'
 import re
+
 class PhoneBook:
+
     select = 0
-    def  add_contact(self):
-        while (True):
-            addChoose = input ('Should this contact be Simple (S), Friend (F), Professional (P) or Both (B)?')
-            if addChoose in {'S', 'F', 'P', 'B'}:
+
+    def add_contact(self):
+        print("Add New Contact")
+
+        while(True):
+            choose = input ('Should this contact be Simple (S), Friend (F), Professional (P) or Both (B)?')
+            if choose in {'S', 's', 'F', 'f', 'P', 'p', 'B', 'b'} :
                 break
-            else:
-                print ('Wrong Selection Choose Again!')
+            print ('Wrong Selection Choose Again!')
 
-        name = input ('Please Enter Contact Name:')
-        phone = input ('Please Enter Phone#:')
+        while(True):
+            name = input('Please Enter Contact Name:')
+            if name not in {'', None}:
+                break
+            print('Name field can not be empty')
+        print(name)
+        while(True):
+            phone = input('Please Enter Phone Number:')
+            if self.confirmPhone(self,phone):
+                break
+            print('phone number may contain only digits')
+        print(phone)
 
-        if (addChoose == 'F'):
+        if choose in {'f','F'}:
             while (True):
-                homePhone = input ('Please Enter HomePhone#:')
-                if (re.match(r"%d+", homePhone)!=None):
+                homePhone = input ('Please Enter Home Phone Number:')
+                if self.confirmPhone(self,homePhone):
                     break
+                print('Home phone number may contain only digits')
+            print(homePhone)
+            while (True):
+                email = input ('Please Enter Email:')
+                if self.confirmEmail(self,email):
+                    break
+                print('ileagal eMail. please try again')
+            print(email)
+
+        elif choose in {'p','P'}:
+            while (True):
+                workPhone = input ('Please Enter Work Phone Number:')
+                if self.confirmPhone(self,workPhone):
+                    break
+                print('Work phone number may contain only digits')
+            print(workPhone)
 
             while (True):
-                eMail = input ('Please Enter eMail:')
-                if (re.match (r"/w+@/w/+./w+")!=None):
+                workEmail = input ('Please Enter eMail:')
+                if self.confirmEmail(self,workEmail):
                     break
+                print('ileagal eMail. please try again')
+            print(workEmail)
+        elif choose in {'b','B'}:
+            print('')
+
+
+
+    def confirmPhone(self,phone):
+        if str.isdigit(phone):
+            return True
+        return False
+    def confirmEmail(self,email):
+        if re.fullmatch(r"\w+@\w+\.\w+",email):
+            return True
+        return False
+
+    def show_contacts(self):
+        print ('Show all')
+
+    def edit_contact(self):
+        print ('Edit')
+
+    def find_contact(self):
+        print ('Find')
+
+    def delete_contact(self):
+        print ('Delete')
 
     def start(self):
         while (True):
@@ -41,19 +98,22 @@ class PhoneBook:
             except ValueError:
                 print ('Wrong Selection Input DUDE!!!')
                 continue
-                
+
             if (select == 1):
-                self.add_contact()
+                self.add_contact(self)
             elif (select == 2):
-                print ('Show all')
+                self.show_contacts()
             elif (select == 3):
-                print ('Edit')
+                self.edit_contact()
             elif (select == 4):
-                print ('Find')
+                self.find_contact()
             elif (select == 5):
-                print ('Delete')
+                self.delete_contact()
             elif (select == 6):
                 print ('Thank you, Come again !')
                 break
             else:
-             print ('Wrong Selection Input DUDE!!!')
+                print ('Wrong Selection Input DUDE!!!')
+
+pb = (PhoneBook)
+pb.start(pb)
